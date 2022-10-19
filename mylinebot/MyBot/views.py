@@ -11,7 +11,7 @@ from django.conf import settings
 from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import *
-
+import urllib.parse
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
@@ -54,7 +54,7 @@ def callback(request):
                                     ),
                                     URIAction(
                                         label='詳細',
-                                        uri='https://ifoodie.tw/restaurant/602dd8d802935e15f7b244bb-深紅汕頭鍋物-民權店'
+                                        uri=  urllib.parse.urlencode(f'{dump[0][5]}')
                                     )
                                 ]
                             ),
