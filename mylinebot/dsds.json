@@ -1,0 +1,21 @@
+[
+    {
+        "deliveryContext": {
+            "isRedelivery": false
+        },
+        "message": {
+            "id": "16976059683669",
+            "text": "gff",
+            "type": "text"
+        },
+        "mode": "active",
+        "replyToken": "b3b1830a2f3b4aaebf99756a7842a121",
+        "source": {
+            "type": "user",
+            "userId": "Ud1d2b3ee12e986d1b2b3be29574d6539"
+        },
+        "timestamp": 1666148585684,
+        "type": "message",
+        "webhookEventId": "01GFQ33MH4KEHRC35HDXDY2MMQ"
+    }
+]
