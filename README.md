@@ -19,8 +19,8 @@
 
 3. LINEBOT-API    [developers](https://developers.line.biz/console/)  
 1.新增一個`Provider`並創建`Messaging API`  
-2.將`Basic settings`裡的`Channel secret` 填到`mylinebot\mylinebot\settings.py` 的`LINE_CHANNEL_SECRET =''`之中  
-3.`Messaging API`裡的`Channel access token` 填到`LINE_CHANNEL_ACCESS_TOKEN =''`之中  
+2.將`Basic settings`裡的`Channel secret` 填到`mylinebot\mylinebot\settings.py` 的`LINE_CHANNEL_SECRET =''`  
+3.`Messaging API`裡的`Channel access token` 填到`LINE_CHANNEL_ACCESS_TOKEN =''`  
 4.`Messaging API`裡的`Webhook URL`填入`https://--------隨機--------.au.ngrok.io/MyBot/callback`
 
 4. 用`python .\manage.py runserver`在該目錄底下啟動`manage.py`  
