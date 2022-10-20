@@ -77,7 +77,7 @@ def getQuickReply(dump=None):
                 QuickReplyButton(
                     action=DatetimePickerAction(label="時間選單",
                                                 data="date_postback",
-                                                mode="date" ,
+                                                mode="date",
                                                 max='2022-06-18',
                                                 min='2010-06-18'
                                                 )
@@ -101,15 +101,6 @@ def getCarouselTemplate(dump):
                     title=f'{dump[0][2]}',
                     text=f'{dump[0][3]}星\n{dump[0][4]}',
                     actions=[
-                        PostbackAction(
-                         label='postback1',
-                         display_text='postback text1',
-                         data='action=buy&itemid=1'
-                        ),
-                        MessageAction(
-                            label='message1',
-                            text='message text1'
-                        ),
                         URIAction(
                             label='詳細',
                             uri=f'{dump[0][5]}'
@@ -121,15 +112,6 @@ def getCarouselTemplate(dump):
                     title=f'{dump[1][2]}',
                     text=f'{dump[1][3]}星\n{dump[1][4]}',
                     actions=[
-                        PostbackAction(
-                         label='postback1',
-                         display_text='postback text1',
-                         data='action=buy&itemid=1'
-                        ),
-                        MessageAction(
-                            label='message1',
-                            text='message text1'
-                        ),
                         URIAction(
                             label='詳細',
                             uri=f'{dump[1][5]}'
@@ -141,15 +123,6 @@ def getCarouselTemplate(dump):
                     title=f'{dump[2][2]}',
                     text=f'{dump[2][3]}星\n{dump[2][4]}',
                     actions=[
-                        PostbackAction(
-                         label='postback1',
-                         display_text='postback text1',
-                         data='action=buy&itemid=1'
-                        ),
-                        MessageAction(
-                            label='message1',
-                            text='message text1'
-                        ),
                         URIAction(
                             label='詳細',
                             uri=f'{dump[2][5]}'
@@ -161,15 +134,6 @@ def getCarouselTemplate(dump):
                     title=f'{dump[3][2]}',
                     text=f'{dump[3][3]}星\n{dump[3][4]}',
                     actions=[
-                        PostbackAction(
-                         label='postback1',
-                         display_text='postback text1',
-                         data='action=buy&itemid=1'
-                        ),
-                        MessageAction(
-                            label='message1',
-                            text='message text1'
-                        ),
                         URIAction(
                             label='詳細',
                             uri=f'{dump[3][5]}'
@@ -181,15 +145,6 @@ def getCarouselTemplate(dump):
                     title=f'{dump[4][2]}',
                     text=f'{dump[4][3]}星\n{dump[4][4]}',
                     actions=[
-                        PostbackAction(
-                         label='postback1',
-                         display_text='postback text1',
-                         data='action=buy&itemid=1'
-                        ),
-                        MessageAction(
-                            label='message1',
-                            text='message text1'
-                        ),
                         URIAction(
                             label='詳細',
                             uri=f'{dump[4][5]}'
@@ -201,15 +156,6 @@ def getCarouselTemplate(dump):
                     title=f'{dump[5][2]}',
                     text=f'{dump[5][3]}星\n{dump[5][4]}',
                     actions=[
-                        PostbackAction(
-                         label='postback1',
-                         display_text='postback text1',
-                         data='action=buy&itemid=1'
-                        ),
-                        MessageAction(
-                            label='message1',
-                            text='message text1'
-                        ),
                         URIAction(
                             label='詳細',
                             uri=f'{dump[5][5]}'
@@ -221,15 +167,6 @@ def getCarouselTemplate(dump):
                     title=f'{dump[6][2]}',
                     text=f'{dump[6][3]}星\n{dump[6][4]}',
                     actions=[
-                        PostbackAction(
-                         label='postback1',
-                         display_text='postback text1',
-                         data='action=buy&itemid=1'
-                        ),
-                        MessageAction(
-                            label='message1',
-                            text='message text1'
-                        ),
                         URIAction(
                             label='詳細',
                             uri=f'{dump[6][5]}'
@@ -241,15 +178,6 @@ def getCarouselTemplate(dump):
                     title=f'{dump[7][2]}',
                     text=f'{dump[7][3]}星\n{dump[7][4]}',
                     actions=[
-                        PostbackAction(
-                         label='postback1',
-                         display_text='postback text1',
-                         data='action=buy&itemid=1'
-                        ),
-                        MessageAction(
-                            label='message1',
-                            text='message text1'
-                        ),
                         URIAction(
                             label='詳細',
                             uri=f'{dump[7][5]}'
@@ -261,15 +189,6 @@ def getCarouselTemplate(dump):
                     title=f'{dump[8][2]}',
                     text=f'{dump[8][3]}星\n{dump[8][4]}',
                     actions=[
-                        PostbackAction(
-                         label='postback1',
-                         display_text='postback text1',
-                         data='action=buy&itemid=1'
-                        ),
-                        MessageAction(
-                            label='message1',
-                            text='message text1'
-                        ),
                         URIAction(
                             label='詳細',
                             uri=f'{dump[8][5]}'
@@ -281,15 +200,6 @@ def getCarouselTemplate(dump):
                     title=f'{dump[9][2]}',
                     text=f'{dump[9][3]}星\n{dump[9][4]}',
                     actions=[
-                        PostbackAction(
-                         label='postback1',
-                         display_text='postback text1',
-                         data='action=buy&itemid=1'
-                        ),
-                        MessageAction(
-                            label='message1',
-                            text='message text1'
-                        ),
                         URIAction(
                             label='詳細',
                             uri=f'{dump[9][5]}'
