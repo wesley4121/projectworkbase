@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from linebot.models import *
+import urllib.parse
 
 ua = UserAgent()
 headers = {'user-agent' : ua.random}
@@ -20,7 +21,8 @@ for row in data:
         opentime=row.find("div",class_="jsx-3292609844 info").text
         address=row.find("div",class_="jsx-3292609844 address-row").text
         id = row['data-id']
-        uri = f'https://ifoodie.tw/restaurant/{id}-{title}'
+        titleURI = urllib.parse.quote(title)
+        uri = f'https://ifoodie.tw/restaurant/{id}-{titleURI}'
         ##避開lazyloaded
         if num >=3:
                 imgsrc = row.find('div', attrs={'class':'jsx-3292609844 restaurant-info'}).a.img['data-src']
@@ -41,4 +43,4 @@ for row in data:
         # print("地址:",address)
         # print(imgsrc)
         # print()
-print(answer)
+print(uri)
