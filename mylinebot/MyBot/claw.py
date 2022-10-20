@@ -1,11 +1,23 @@
+from asyncio.windows_events import NULL
+from ctypes.wintypes import PINT
 import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from linebot.models import *
 import urllib.parse
 
+citys = ['台北市', '新北市', '桃園市', '台中市', '台南市', '高雄市', '基隆市', '宜蘭縣', '新竹市',
+         '新竹縣', '苗栗縣', '彰化縣', '雲林縣', '嘉義市', '嘉義縣', '屏東縣', '花蓮縣', '南投縣',
+         '台東縣', '澎湖縣', '金門縣']
 
-def returnAnswer(userinput):
+
+# if  not citys.__contains__('dd'):
+#     print('t')
+
+
+def returnClawAnswer(userinput):
+    if not citys.__contains__(userinput):
+        return None
     url = f"https://ifoodie.tw/explore/{userinput}/list"
     ua = UserAgent()
     headers = {'user-agent': ua.random}
@@ -41,30 +53,68 @@ def returnAnswer(userinput):
     return answer
 
 
-def gettemplate(dump):
+def getQuickReply(dump=None):
+    quick_reply = TextSendMessage(
+        text='a quick reply message',
+        quick_reply=QuickReply(
+            items=[
+                QuickReplyButton(
+                    action=CameraAction(label="開啟相機吧")
+                ),
+                QuickReplyButton(
+                    action=CameraRollAction(label="相機膠捲")
+                ),
+                # return a location message
+                QuickReplyButton(
+                    action=LocationAction(label="位置資訊")
+                ),
+                QuickReplyButton(
+                    action=PostbackAction(label="postback", data="postback")
+                ),
+                QuickReplyButton(
+                    action=MessageAction(label="message", text="one message")
+                ),
+                QuickReplyButton(
+                    action=DatetimePickerAction(label="時間選單",
+                                                data="date_postback",
+                                                mode="date" ,
+                                                max='2022-06-18',
+                                                min='2010-06-18'
+                                                )
+                )
+            ]
+        )
+    )
+    return quick_reply
+
+
+# [num, imgsrc, title, score, opentime, uri, address]
+def getCarouselTemplate(dump):
+    if dump == None:
+        return TextSendMessage(text='沒有資料')
     carousel_template_message = TemplateSendMessage(
         alt_text='Carousel template',
         template=CarouselTemplate(
             columns=[
                 CarouselColumn(
-                 thumbnail_image_url=f'{dump[0][1]}',
-                 title=f'{dump[0][2]}',
-                 text=f'{dump[0][3]}星\n{dump[0][4]}',
-                 actions=[
-                     PostbackAction(
+                    thumbnail_image_url=f'{dump[0][1]}',
+                    title=f'{dump[0][2]}',
+                    text=f'{dump[0][3]}星\n{dump[0][4]}',
+                    actions=[
+                        PostbackAction(
                          label='postback1',
                          display_text='postback text1',
                          data='action=buy&itemid=1'
-                     ),
-                     MessageAction(
-                         label='message1',
-                         text='message text1'
-                     ),
-                     URIAction(
-                         label='詳細',
-                         uri=f'{dump[0][5]}'
-                     )
-                 ]
+                        ),
+                        MessageAction(
+                            label='message1',
+                            text='message text1'
+                        ),
+                        URIAction(
+                            label='詳細',
+                            uri=f'{dump[0][5]}'
+                        )
+                    ]
                 ),
                 CarouselColumn(
                     thumbnail_image_url=f'{dump[1][1]}',

@@ -1,5 +1,6 @@
 # Create your views here.
 from pydoc import text
+from types import NoneType
 from unittest import result
 import requests
 from fake_useragent import UserAgent
@@ -34,9 +35,12 @@ def callback(request):
         for event in events:    # type: ignore
             if isinstance(event, MessageEvent):  # 如果有訊息事件
                 # BotResult = getuserInput(event.message.text)
-                dump = returnAnswer(event.message.text)
+                dump = returnClawAnswer(event.message.text)
 
-                line_bot_api.reply_message(event.reply_token, gettemplate(dump))
+                    
+                
+
+                line_bot_api.reply_message(event.reply_token, getQuickReply())
                 
 
         return HttpResponse()
