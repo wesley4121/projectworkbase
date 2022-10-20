@@ -23,7 +23,7 @@
 3.`Messaging API`裡的`Channel access token` 填到`LINE_CHANNEL_ACCESS_TOKEN =''`  
 4.`Messaging API`裡的`Webhook URL`填入`https://--------隨機--------.au.ngrok.io/MyBot/callback`
 
-4. 用`python .\manage.py runserver`在該目錄底下啟動`manage.py`(或IDE啟動也可以)
+4. 用`python .\manage.py runserver`在該目錄底下啟動`manage.py`(或IDE啟動也可以)  
 1.到`Messaging API`裡的`Webhook settings`的`Verify` 出現`Success` 代表成功
 
 
