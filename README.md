@@ -24,7 +24,7 @@
 4.`Messaging API`裡的`Webhook URL`填入`https://--------隨機--------.au.ngrok.io/MyBot/callback`
 
 4. 用`python .\manage.py runserver`在該目錄底下啟動`manage.py`  
-1.按下`Messaging API` `WebHook`的`Verify` 出現`Success` 代表成功
+1.到`Messaging API`/`WebHook`的`Verify` 出現`Success` 代表成功
 
 
 
