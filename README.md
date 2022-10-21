@@ -4,7 +4,7 @@
 `pip install django`  
 `pip install fake_useragent`  
 `pip install line-bot-sdk`  
-`pip install beautifulsoup4`  
+`pip install bs4`  
 
 ## installation
 
