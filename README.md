@@ -9,7 +9,7 @@
 ## installation
 
 1. ngrok雲端伺服器    [ngrok](https://dashboard.ngrok.com/get-started/setup)  
-1.下載並辦好帳號後開啟'`ngrok.exe`'  
+1.辦好帳號後開啟'`ngrok.exe`'  
 2.輸入`ngrok config add-authtoken "你的帳號識別金鑰"`  
 3.再輸入`ngrok http 8000`  
 
