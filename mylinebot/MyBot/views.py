@@ -32,35 +32,19 @@ def callback(request):
         except LineBotApiError:
             return HttpResponseBadRequest()
 
-        for event in events:    # type: ignore
+        for event in events:
             if isinstance(event, MessageEvent):  # 如果有訊息事件
 
                 dump = returnClawAnswer(event.message.text)
 
-                ct = TemplateSendMessage(
-                    alt_text='Carousel template',
-                    template=CarouselTemplate(
-                        columns=[
-                            CarouselColumn(
-                                thumbnail_image_url=f'https://example.com/bot/images/item1.jpg',
-                                title=f'ddddd',
-                                text=f'sasasasa',
-                                actions=[
-                                    MessageAction(
-                                        label='message1',
-                                        text='message text1'
-                                    )
-
-
-                                ]
-                            )
-                        ]
-                    )
-                )
-
                 line_bot_api.reply_message(event.reply_token,
-                                           getCarouselTemplate(dump)
+                                           # MESSAGE__HERE
+
+                                           getQuickReply()
                                            )
+            elif isinstance(event, PostbackEvent):
+                line_bot_api.reply_message(
+                    event.reply_token, TextSendMessage(text=event.postback.data))
 
         return HttpResponse()
     else:
