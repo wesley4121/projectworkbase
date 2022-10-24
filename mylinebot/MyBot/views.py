@@ -1,4 +1,5 @@
 # Create your views here.
+from ast import Pass
 from ipaddress import v4_int_to_packed
 from select import select
 from django.shortcuts import render
@@ -11,10 +12,14 @@ from linebot.models import *
 from re import *
 import re
 from MyBot.claw import *
+
+
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
-selectionlist=[]
+selectionlist = []
+
+
 @csrf_exempt
 def callback(request):
 
@@ -35,20 +40,30 @@ def callback(request):
 
                 print(f'message.text : {event.message.text}')
 
-                line_bot_api.reply_message(event.reply_token,
+                line_bot_api.reply_message(event.reply_token,messages=getQuickReply(userinput_city=event.message.text)
                                            # MESSAGE__HERE
-                                           messages=getQuickReply(
-                                               userinput_city=event.message.text)
+
                                            )
             # ============================如果有POSTBACK事件
             elif isinstance(event, PostbackEvent):
-                
+
                 front = re.search(r'(\w+)&', event.postback.data).group(1)
-                back = re.search(r'&(\w+)', event.postback.data).group(1)
+                back = re.search(r'&(\w.+)', event.postback.data).group(1)
                 if front == 'city':
                     selectionlist.append(back)
-                    line_bot_api.reply_message(event.reply_token,getQuickReply(postback_city=back)
-                        )
+                    line_bot_api.reply_message(event.reply_token, getQuickReply(postback_city=back)
+                                               )
+                if front == 'location':
+                    print(back)
+                    sliceback = back.split(',')
+                    print(sliceback)
+                    line_bot_api.reply_message(event.reply_token,
+                                               LocationMessage(
+                                                   title=f'{sliceback[0]}',
+                                                   address=f'{sliceback[1]}',
+                                                   latitude=f'{sliceback[2]}',
+                                                   longitude=f'{sliceback[3]}'
+                                               ))
                 if front == 'local':  # 正則 找&以前
                     selectionlist.append(back)
                     print(selectionlist[0])

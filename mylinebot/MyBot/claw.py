@@ -4,6 +4,7 @@ from fake_useragent import UserAgent
 from linebot.models import *
 import urllib.parse
 from MyBot.TaiwanCitys import *
+from MyBot.location import *
 
 citys = ['台北市', '新北市', '桃園市', '台中市', '台南市', '高雄市', '基隆市', '宜蘭縣', '新竹市',
          '新竹縣', '苗栗縣', '彰化縣', '雲林縣', '嘉義市', '嘉義縣', '屏東縣', '花蓮縣', '南投縣',
@@ -12,42 +13,36 @@ citys = ['台北市', '新北市', '桃園市', '台中市', '台南市', '高�
 locals = area_data
 
 
-
 types = ['新開幕', '火鍋', '早午餐', '小吃', '餐酒館', '酒吧', '精緻高級', '約會餐廳', '甜點', '燒烤', '日本料理', '居酒屋', '義式料理',
          '中式料理', '韓式', '泰式', '港式料理', '美式', '冰品飲料', '蛋糕', '飲料店', '吃到飽', '合菜', '牛肉麵', '牛排', '咖啡', '素食',
          '寵物友善', '景觀餐廳', '親子餐廳', '拉麵', '咖哩', '宵夜', '早餐', '午餐', '晚餐', '下午茶']
 
 
+def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=None):  # 爬蟲主程式
 
-
-def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=None):  ## 爬蟲主程式
-
-    if not userinput_city ==None and not userinput_local ==None and not userinput_type ==None:
+    if not userinput_city == None and not userinput_local == None and not userinput_type == None:
         # if not citys.__contains__(userinput_city):
         #     return None
         url = f"https://ifoodie.tw/explore/{userinput_city}/{userinput_local}/list/{userinput_type}"
         print(url)
 
-
-    elif not userinput_city ==None and not userinput_local ==None:     
+    elif not userinput_city == None and not userinput_local == None:
         # if not citys.__contains__(userinput_city) and not locals.__contains__(userinput_local):
         #     return None
         url = f"https://ifoodie.tw/explore/{userinput_city}/{userinput_local}/list"
         print(url)
 
-    elif not userinput_city ==None and not userinput_type ==None:    
+    elif not userinput_city == None and not userinput_type == None:
         # if not citys.__contains__(userinput_city) and not types.__contains__(userinput_type):
         #     return None
         url = f"https://ifoodie.tw/explore/{userinput_city}/list{userinput_type}"
         print(url)
-      
-    else:                             
+
+    else:
         # if not citys.__contains__(userinput_city) and not locals.__contains__(userinput_local) and not types.__contains__(userinput_type):
         #     return None
         url = f"https://ifoodie.tw/explore/{userinput_city}/list"
         print(url)
-
-
 
     ua = UserAgent()
     headers = {'user-agent': ua.random}
@@ -69,6 +64,7 @@ def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=N
         id = row['data-id']
         titleURI = urllib.parse.quote(title)  # 轉URI
         uri = f'https://ifoodie.tw/restaurant/{id}-{titleURI}'  # 詳細資料
+        location = returnLocation(uri)
 
         # 避開第三筆之後會出現的lazyloaded
         if num >= 3:
@@ -77,7 +73,8 @@ def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=N
         else:
             imgsrc = row.find(
                 'div', attrs={'class': 'jsx-3292609844 restaurant-info'}).a.img['src']
-        content = [num, imgsrc, title, score, opentime, uri, address]
+        content = [num, imgsrc, title, score, opentime,
+                   uri, address, location[0], location[1]]
         answer.append(content)
 
     return answer
@@ -85,7 +82,7 @@ def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=N
 
 def getQuickReply(userinput_city=None, postback_city=None, postback_local=None):  # 快速回覆
 
-    if not userinput_city == None:  ## 接收使用者輸入
+    if not userinput_city == None:  # 接收使用者輸入
 
         ct_scan_answer = []
         for ct in citys:  # 如果CT中有輸入的資料裝進SCANLIST
@@ -105,11 +102,11 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_local=None):
             for i in range(len(ct_scan_answer))
         ]
 
-        #================================================
-    if not postback_city == None :   ##　接收使用者按下按鈕的POSTBACK
+        # ================================================
+    if not postback_city == None:  # 　postback_city = 接收使用者按下按鈕的POSTBACK
 
         lc_scan_answer = locals[f'{postback_city}']
-        
+
         quick_itemList = [  # 創建ITEMLIST 放進資料
             QuickReplyButton(
                 action=PostbackAction(
@@ -121,9 +118,9 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_local=None):
             for i in range(len(lc_scan_answer))
         ]
 
-        #================================================
+        # ================================================
 
-    # if not postback_local == None :  
+    # if not postback_local == None :
     #     tp_scan_answer = []
 
     #     quick_itemList = [  # 創建ITEMLIST 放進資料
@@ -137,7 +134,7 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_local=None):
     #         for i in range(len(lc_scan_answer))
     #     ]
 
-        #================================================
+        # ================================================
 
     quickreply = TextSendMessage(  # 裝進TEXT_MESSAGE
         text='請點選',
@@ -148,7 +145,7 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_local=None):
     return quickreply
 
 
-# [num, imgsrc, title, score, opentime, uri, address]
+# [num, imgsrc, title, score, opentime, uri, address, location[0],location[1]]
 def getCarouselTemplate(dump=None):
     if dump == None:
         return TextSendMessage(text='沒有資料')
@@ -161,6 +158,10 @@ def getCarouselTemplate(dump=None):
                 URIAction(
                     label='詳細',
                     uri=f'{dump[i][5]}'
+                ),
+                PostbackAction(
+                    label=f"位置",
+                    data=f"location&{dump[i][2]},{dump[i][6]},{dump[i][7]},{dump[i][8]}",
                 )
             ]
         )

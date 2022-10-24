@@ -15,7 +15,12 @@ cityback = ''
 # cityback = cityback+'5asdv5sd'
 cityback = 'asdasdasd'
 
-select = []
+select = [4,5,6,9,1,2]
+sdsdsds = ['dsdsds','wewewe','xzczxcz']
+apple = []
+apple.append(sdsdsds)
+print(apple)
+yyyyyy= select+sdsdsds
 x= ''
 a=''
 select.append(a)
@@ -25,4 +30,4 @@ wwwwwwwwwww= ['' for i in range(2)]
 
 
 
-print(wwwwwwwwwww)
+print(yyyyyy)
