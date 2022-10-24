@@ -1,11 +1,6 @@
 # Create your views here.
-from cProfile import label
-from codecs import backslashreplace_errors
-from pydoc import text
-from types import NoneType
-from unittest import result
-from fake_useragent import UserAgent
-from bs4 import BeautifulSoup
+from ipaddress import v4_int_to_packed
+from select import select
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
@@ -16,7 +11,6 @@ from linebot.models import *
 from re import *
 import re
 from MyBot.claw import *
-import json
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
@@ -58,6 +52,7 @@ def callback(request):
                 if front == 'local':  # 正則 找&以前
                     selectionlist.append(back)
                     print(selectionlist[0])
+                    print(selectionlist[1])
 
                     dump = returnClawAnswer(  # 爬資料
                         userinput_city=selectionlist[0],
@@ -66,7 +61,7 @@ def callback(request):
                     line_bot_api.reply_message(  # 回覆爬蟲資料
                         event.reply_token,
                         getCarouselTemplate(dump))
-
+                    selectionlist.clear()
         return HttpResponse()
     else:
         return HttpResponseBadRequest()
