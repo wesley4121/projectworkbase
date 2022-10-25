@@ -53,6 +53,9 @@ def callback(request):
                     selectionlist.append(back)
                     line_bot_api.reply_message(event.reply_token, getQuickReply(postback_city=back)
                                                )
+                if front == 'page':
+                    print(back)
+                    line_bot_api.reply_message(event.reply_token,getQuickReply(postback_pagechange=back))
                 if front == 'location':
                     print(back)
                     sliceback = back.split(',')

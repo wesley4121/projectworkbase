@@ -1,3 +1,5 @@
+from ast import Try
+from types import NoneType
 import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
@@ -16,6 +18,7 @@ locals = area_data
 types = ['新開幕', '火鍋', '早午餐', '小吃', '餐酒館', '酒吧', '精緻高級', '約會餐廳', '甜點', '燒烤', '日本料理', '居酒屋', '義式料理',
          '中式料理', '韓式', '泰式', '港式料理', '美式', '冰品飲料', '蛋糕', '飲料店', '吃到飽', '合菜', '牛肉麵', '牛排', '咖啡', '素食',
          '寵物友善', '景觀餐廳', '親子餐廳', '拉麵', '咖哩', '宵夜', '早餐', '午餐', '晚餐', '下午茶']
+
 
 
 def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=None):  # 爬蟲主程式
@@ -48,23 +51,78 @@ def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=N
     headers = {'user-agent': ua.random}
     htmlfile = requests.get(url, headers=headers)
     soup = BeautifulSoup(htmlfile.text, "lxml")
+
     data = soup.find(
         "div", class_="jsx-3759983297 item-list").find_all('div', attrs={'data-id': True})
     num = 0
     answer = []
     for row in data:
+        score = None
+        title = None
+        opentime = None
+        address = None
+        id = None
+        location = None
         if num >= 10:
             break
         num += 1
-        title = row.find("div", class_="jsx-3292609844 title").a.text
-        title = title.replace(' ', '-')  # 取代空白
-        score = row.find("div", class_="jsx-1207467136 text").text
-        opentime = row.find("div", class_="jsx-3292609844 info").text
-        address = row.find("div", class_="jsx-3292609844 address-row").text
-        id = row['data-id']
-        titleURI = urllib.parse.quote(title)  # 轉URI
-        uri = f'https://ifoodie.tw/restaurant/{id}-{titleURI}'  # 詳細資料
-        location = returnLocation(uri)
+        try:
+            title = row.find("div", class_="jsx-3292609844 title").a.text
+            title = title.replace(' ', '-')  # 取代空白
+        except:
+            print('title:except')
+            if title == None:
+                title = 'wwwwww'
+        #===
+        try:
+            score = row.find("div", class_="jsx-1207467136 text").text
+        except:
+            print('score:except')
+            if score == None:
+                score = 'wwwwww'
+        #===
+        try:
+            opentime = row.find("div", class_="jsx-3292609844 info").text
+            print(row.find("div", class_="jsx-3292609844 info").text)
+        except:
+            print('opentime:except')
+            if opentime == None:
+                opentime = 'wwwwww'
+        #===
+        try:
+            address = row.find("div", class_="jsx-3292609844 address-row").text
+        except:
+            print('address:except')
+            if address == None:
+                address = 'wwwwww'
+        #===
+        try:
+            id = row['data-id']
+        except:
+            print('id:except')
+            if id == None:
+                id = 'wwwwww'
+        #===
+        try:
+            titleURI = urllib.parse.quote(title)  # 轉URI
+        except:
+            print('titleURI:except')
+            if titleURI == None:
+                titleURI = 'wwwwww'
+        #===
+        try:
+            uri = f'https://ifoodie.tw/restaurant/{id}-{titleURI}'  # 詳細資料
+        except:
+            print('url:except')
+            if uri == None:
+                uri = 'wwwwww'
+        #===
+        try:
+            location = returnLocation(uri)
+        except:
+            print('location:except')
+            if location == None:
+                location = 'wwwwww'
 
         # 避開第三筆之後會出現的lazyloaded
         if num >= 3:
@@ -80,7 +138,7 @@ def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=N
     return answer
 
 
-def getQuickReply(userinput_city=None, postback_city=None, postback_local=None):  # 快速回覆
+def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=None, postback_local=None):  # 快速回覆
 
     if not userinput_city == None:  # 接收使用者輸入
 
@@ -103,21 +161,114 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_local=None):
         ]
 
         # ================================================
-    if not postback_city == None:  # 　postback_city = 接收使用者按下按鈕的POSTBACK
+    if not postback_city == None :  # 　postback_city = 接收使用者按下按鈕的POSTBACK
 
         lc_scan_answer = locals[f'{postback_city}']
 
-        quick_itemList = [  # 創建ITEMLIST 放進資料
+        if len(lc_scan_answer) > 10:
+
+            uppage_button = [
+                QuickReplyButton(
+                    action=PostbackAction(
+                        label=f"上一頁",
+                        data=f'page&up,{postback_city}'
+                    )
+                )
+            ]
+            downpage_button = [
+                QuickReplyButton(
+                    action=PostbackAction(
+                        label=f"下一頁",
+                        data=f'page&down,{postback_city}'
+                    )
+                )
+            ]
+            quick_item_pagelist = [
+                [
+                    QuickReplyButton(
+                        action=PostbackAction(
+                            label=f"{lc_scan_answer[i]}",
+                            data=f"local&{lc_scan_answer[i]}",
+                            display_text=f'{lc_scan_answer[i]}'
+                        )
+                    )
+                    for i in range(9)
+                ],
+                [
+                    QuickReplyButton(
+                        action=PostbackAction(
+                            label=f"{lc_scan_answer[i+9]}",
+                            data=f"local&{lc_scan_answer[i+9]}",
+                            display_text=f'{lc_scan_answer[i+9]}'
+                        )
+                    )
+                    for i in range(len(lc_scan_answer)-9)
+                ]
+            ]
+            quick_itemList = downpage_button + quick_item_pagelist[0]
+            
+        elif  len(lc_scan_answer) <= 10:
+            quick_itemList = [
+                QuickReplyButton(
+                    action=PostbackAction(
+                        label=f"{lc_scan_answer[i]}",
+                        data=f"local&{lc_scan_answer[i]}",
+                        display_text=f'{lc_scan_answer[i]}'
+                    )
+                )
+                for i in range(len(lc_scan_answer))
+            ]
+        
+    if not postback_pagechange == None:
+
+        postback_pagechange_data_slice = postback_pagechange.split(',')
+        lc_scan_answer = locals[f'{postback_pagechange_data_slice[1]}']
+        print(postback_pagechange_data_slice[0])
+        print(postback_pagechange_data_slice[1])
+        uppage_button = [
             QuickReplyButton(
                 action=PostbackAction(
-                    label=f"{lc_scan_answer[i]}",
-                    data=f"local&{lc_scan_answer[i]}",
-                    display_text=f'{lc_scan_answer[i]}'
+                    label=f"上一頁",
+                    data=f'page&up,{postback_pagechange_data_slice[1]}'
                 )
             )
-            for i in range(len(lc_scan_answer))
         ]
+        downpage_button = [
+            QuickReplyButton(
+                action=PostbackAction(
+                    label=f"下一頁",
+                    data=f'page&down,{postback_pagechange_data_slice[1]}'
 
+                )
+            )
+        ]
+        quick_item_pagelist = [
+            [
+                QuickReplyButton(
+                    action=PostbackAction(
+                        label=f"{lc_scan_answer[i]}",
+                        data=f"local&{lc_scan_answer[i]}",
+                        display_text=f'{lc_scan_answer[i]}'
+                    )
+                )
+                for i in range(9)
+            ],
+            [
+                QuickReplyButton(
+                    action=PostbackAction(
+                        label=f"{lc_scan_answer[i+9]}",
+                        data=f"local&{lc_scan_answer[i+9]}",
+                        display_text=f'{lc_scan_answer[i+9]}'
+                    )
+                )
+                for i in range(len(lc_scan_answer)-9)
+            ]
+        ]
+        if postback_pagechange_data_slice[0] =='up':
+            quick_itemList = downpage_button + quick_item_pagelist[0]
+        elif postback_pagechange_data_slice[0] == 'down':
+            quick_itemList = uppage_button + quick_item_pagelist[1]
+            
         # ================================================
 
     # if not postback_local == None :
