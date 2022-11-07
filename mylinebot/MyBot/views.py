@@ -37,13 +37,24 @@ def callback(request):
         for event in events:
 
             if isinstance(event, MessageEvent):  # ===============================如果有訊息事件
+                print(event.message.type)
+                if event.message.type == 'location':
+                    print('isLoaction')
+                    latitude = event.message.latitude
+                    longitude = event.message.longitude
+                    dump = returnClawAnswer(location=(latitude,longitude))
+                    line_bot_api.reply_message(event.reply_token,getCarouselTemplate(dump))
+                elif event.message.type =='text':
 
-                print(f'message.text : {event.message.text}')
-
-                line_bot_api.reply_message(event.reply_token,messages=getQuickReply(userinput_city=event.message.text)
+                    print(f'message.text : {event.message.text}')
+                    
+                    line_bot_api.reply_message(event.reply_token,messages=getQuickReply(userinput_city=event.message.text)
                                            # MESSAGE__HERE
 
                                            )
+
+
+
             # ============================如果有POSTBACK事件
             elif isinstance(event, PostbackEvent):
 

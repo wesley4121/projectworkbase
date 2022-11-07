@@ -21,29 +21,29 @@ types = ['新開幕', '火鍋', '早午餐', '小吃', '餐酒館', '酒吧', '�
 
 
 
-def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=None):  # 爬蟲主程式
+def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=None , location=None):  # 爬蟲主程式
 
     if not userinput_city == None and not userinput_local == None and not userinput_type == None:
-        # if not citys.__contains__(userinput_city):
-        #     return None
+
         url = f"https://ifoodie.tw/explore/{userinput_city}/{userinput_local}/list/{userinput_type}"
         print(url)
 
     elif not userinput_city == None and not userinput_local == None:
-        # if not citys.__contains__(userinput_city) and not locals.__contains__(userinput_local):
-        #     return None
+
         url = f"https://ifoodie.tw/explore/{userinput_city}/{userinput_local}/list"
         print(url)
 
     elif not userinput_city == None and not userinput_type == None:
-        # if not citys.__contains__(userinput_city) and not types.__contains__(userinput_type):
-        #     return None
+
         url = f"https://ifoodie.tw/explore/{userinput_city}/list{userinput_type}"
         print(url)
 
+    elif not location == None:
+
+        url = f"https://ifoodie.tw/explore/list?place=current&latlng={location[0]},{location[1]}"
+
     else:
-        # if not citys.__contains__(userinput_city) and not locals.__contains__(userinput_local) and not types.__contains__(userinput_type):
-        #     return None
+
         url = f"https://ifoodie.tw/explore/{userinput_city}/list"
         print(url)
 
@@ -138,8 +138,9 @@ def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=N
     return answer
 
 
-def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=None, postback_local=None):  # 快速回覆
-
+#===================================================================================================================
+#===================================================================================================================
+def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=None):  # 快速回覆
     if not userinput_city == None:  # 接收使用者輸入
 
         ct_scan_answer = []
@@ -159,14 +160,20 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
             )
             for i in range(len(ct_scan_answer))
         ]
-
-        # ================================================
+#===================================================================================================================
     if not postback_city == None :  # 　postback_city = 接收使用者按下按鈕的POSTBACK
 
         lc_scan_answer = locals[f'{postback_city}']
-
+        
         if len(lc_scan_answer) > 10:
-
+            nowlocation = [
+                QuickReplyButton(
+                    action=LocationAction(
+                        label=f"鄰近位置"
+                        
+                    )
+                )
+            ]
             uppage_button = [
                 QuickReplyButton(
                     action=PostbackAction(
@@ -205,8 +212,8 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
                     for i in range(len(lc_scan_answer)-9)
                 ]
             ]
-            quick_itemList = downpage_button + quick_item_pagelist[0]
-            
+            quick_itemList = downpage_button + nowlocation + quick_item_pagelist[0]
+
         elif  len(lc_scan_answer) <= 10:
             quick_itemList = [
                 QuickReplyButton(
@@ -218,6 +225,7 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
                 )
                 for i in range(len(lc_scan_answer))
             ]
+#===================================================================================================================
         
     if not postback_pagechange == None:
 
@@ -225,6 +233,14 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
         lc_scan_answer = locals[f'{postback_pagechange_data_slice[1]}']
         print(postback_pagechange_data_slice[0])
         print(postback_pagechange_data_slice[1])
+        nowlocation = [
+            QuickReplyButton(
+                action=LocationAction(
+                    label=f"鄰近位置"
+                    
+                )
+            )
+        ]
         uppage_button = [
             QuickReplyButton(
                 action=PostbackAction(
@@ -265,28 +281,10 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
             ]
         ]
         if postback_pagechange_data_slice[0] =='up':
-            quick_itemList = downpage_button + quick_item_pagelist[0]
+            quick_itemList = downpage_button + nowlocation + quick_item_pagelist[0]
         elif postback_pagechange_data_slice[0] == 'down':
-            quick_itemList = uppage_button + quick_item_pagelist[1]
-            
-        # ================================================
-
-    # if not postback_local == None :
-    #     tp_scan_answer = []
-
-    #     quick_itemList = [  # 創建ITEMLIST 放進資料
-    #         QuickReplyButton(
-    #             action=PostbackAction(
-    #                 label=f"{lc_scan_answer[i]}",
-    #                 data=f"city&{lc_scan_answer[i]}",
-    #                 display_text=f'{lc_scan_answer[i]}'
-    #             )
-    #         )
-    #         for i in range(len(lc_scan_answer))
-    #     ]
-
-        # ================================================
-
+            quick_itemList = uppage_button + nowlocation + quick_item_pagelist[1]
+#===================================================================================================================
     quickreply = TextSendMessage(  # 裝進TEXT_MESSAGE
         text='請點選',
         quick_reply=QuickReply(
@@ -294,6 +292,8 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
         )
     )
     return quickreply
+#===================================================================================================================
+#===================================================================================================================
 
 
 # [num, imgsrc, title, score, opentime, uri, address, location[0],location[1]]
@@ -325,3 +325,5 @@ def getCarouselTemplate(dump=None):
         )
     )
     return carousel_template_message
+#===================================================================================================================
+#===================================================================================================================
