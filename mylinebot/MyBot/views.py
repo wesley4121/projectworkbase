@@ -45,7 +45,7 @@ def callback(request):
                     dump = returnClawAnswer(location=(latitude,longitude))
                     line_bot_api.reply_message(event.reply_token,getCarouselTemplate(dump))
                 elif event.message.type =='text':
-
+                    back = re.search(r'(^res)(.+)',event.message.text)
                     print(f'message.text : {event.message.text}')
                     
                     line_bot_api.reply_message(event.reply_token,messages=getQuickReply(userinput_city=event.message.text)
