@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-0qvn-$(8u698p**suo&j5mrt5v4q*5$kh#m7@*7fx=#ji1+fy*
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '8a0e-125-228-190-168.jp.ngrok.io'  
+    'b05a-111-241-203-96.au.ngrok.io'  
 ]
 LINE_CHANNEL_ACCESS_TOKEN = '+Rdm9cKSNXM51TcY3ru9/hKzuZfQ9kqXRtSFYrnUixrV23JNH1zNuIAIqktAhvJPMy69o//IAtfkJcSOR7seGKIZUh5P0Gy92BpCLJNRAsT8vqDmFfaDjlhc2zMKg3abSUFqS0SHeHuvPRXKr3hcqAdB04t89/1O/w1cDnyilFU='
  

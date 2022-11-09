@@ -243,9 +243,9 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
     if not postback_pagechange == None:
 
         postback_pagechange_data_slice = postback_pagechange.split(',')
-        lc_scan_answer = locals[f'{postback_pagechange_data_slice[1]}']
         print(postback_pagechange_data_slice[0])
         print(postback_pagechange_data_slice[1])
+        lc_scan_answer = locals[f'{postback_pagechange_data_slice[1]}']
         nowlocation = [
             QuickReplyButton(
                 image_url='https://cdn-icons-png.flaticon.com/128/4481/4481066.png',
@@ -270,7 +270,7 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
                 
                 action=PostbackAction(
                     label=f"下一頁",
-                    data=f'page&down,{postback_city}'
+                    data=f'page&down,{postback_pagechange_data_slice[1]}'
                 )
             )
         ]
