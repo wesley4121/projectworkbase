@@ -38,24 +38,27 @@ def callback(request):
 
             if isinstance(event, MessageEvent):  # ===============================如果有訊息事件
                 print(event.message.type)
+                # 判斷MESSAGE類型
                 if event.message.type == 'location':
                     print('isLoaction')
                     latitude = event.message.latitude
                     longitude = event.message.longitude
                     dump = returnClawAnswer(location=(latitude,longitude))
                     line_bot_api.reply_message(event.reply_token,getCarouselTemplate(dump))
+                    
                 elif event.message.type =='text':
                     try:
-                        front = re.search(r'(^res)(.+)',event.message.text).group(1)
-                        back = re.search(r'(^res)(.+)',event.message.text).group(2)
+                        front = re.search(r'(^/)(.+)',event.message.text).group(1)
+                        back = re.search(r'(^/)(.+)',event.message.text).group(2)
                     except:
-                        pass
-                    if front  == 'res':
+                        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='錯誤輸入，請以"/"開頭'))
+                    if front  == '/':
                         print(f'message.text : {event.message.text}')
                     
                         line_bot_api.reply_message(event.reply_token,messages=getQuickReply(userinput_city=back)
                                            # MESSAGE__HERE
                                            )
+
 
 
 

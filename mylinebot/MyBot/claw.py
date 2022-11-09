@@ -33,11 +33,6 @@ def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=N
         url = f"https://ifoodie.tw/explore/{userinput_city}/{userinput_local}/list"
         print(url)
 
-    elif not userinput_city == None and not userinput_type == None:
-
-        url = f"https://ifoodie.tw/explore/{userinput_city}/list{userinput_type}"
-        print(url)
-
     elif not location == None:
 
         url = f"https://ifoodie.tw/explore/list?place=current&latlng={location[0]},{location[1]}"
@@ -149,9 +144,18 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
                 ct_scan_answer.append(ct)
         if len(ct_scan_answer) == 0:  # 如果LIST為0則為沒有資料
             return TextSendMessage(text='沒有資料')
-
-        quick_itemList = [  # 創建ITEMLIST 放進資料
+        nowlocation = [
             QuickReplyButton(
+                image_url='https://cdn-icons-png.flaticon.com/128/4481/4481066.png',
+                action=LocationAction(
+                    label=f"鄰近位置"
+
+                )
+            )
+        ]
+        quick_itemList = nowlocation + [  # 創建ITEMLIST 放進資料
+            QuickReplyButton(
+                image_url='https://cdn-icons-png.flaticon.com/128/4619/4619003.png',
                 action=PostbackAction(
                     label=f"{ct_scan_answer[i]}",
                     data=f"city&{ct_scan_answer[i]}",
@@ -168,7 +172,9 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
         if len(lc_scan_answer) > 10:
             nowlocation = [
                 QuickReplyButton(
+                    image_url='https://cdn-icons-png.flaticon.com/128/4481/4481066.png',
                     action=LocationAction(
+                        
                         label=f"鄰近位置"
                         
                     )
@@ -176,7 +182,9 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
             ]
             uppage_button = [
                 QuickReplyButton(
+                    image_url='https://cdn-icons-png.flaticon.com/128/4495/4495685.png',
                     action=PostbackAction(
+                        
                         label=f"上一頁",
                         data=f'page&up,{postback_city}'
                     )
@@ -184,6 +192,8 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
             ]
             downpage_button = [
                 QuickReplyButton(
+                    image_url='https://cdn-icons-png.flaticon.com/128/4495/4495689.png',
+                    
                     action=PostbackAction(
                         label=f"下一頁",
                         data=f'page&down,{postback_city}'
@@ -193,6 +203,7 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
             quick_item_pagelist = [
                 [
                     QuickReplyButton(
+                    image_url='https://cdn-icons-png.flaticon.com/128/4619/4619069.png',
                         action=PostbackAction(
                             label=f"{lc_scan_answer[i]}",
                             data=f"local&{lc_scan_answer[i]}",
@@ -203,6 +214,7 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
                 ],
                 [
                     QuickReplyButton(
+                        image_url='https://cdn-icons-png.flaticon.com/128/4619/4619069.png',
                         action=PostbackAction(
                             label=f"{lc_scan_answer[i+9]}",
                             data=f"local&{lc_scan_answer[i+9]}",
@@ -217,6 +229,7 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
         elif  len(lc_scan_answer) <= 10:
             quick_itemList = [
                 QuickReplyButton(
+                    image_url='https://cdn-icons-png.flaticon.com/128/4619/4619069.png',    
                     action=PostbackAction(
                         label=f"{lc_scan_answer[i]}",
                         data=f"local&{lc_scan_answer[i]}",
@@ -235,6 +248,7 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
         print(postback_pagechange_data_slice[1])
         nowlocation = [
             QuickReplyButton(
+                image_url='https://cdn-icons-png.flaticon.com/128/4481/4481066.png',
                 action=LocationAction(
                     label=f"鄰近位置"
                     
@@ -243,6 +257,7 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
         ]
         uppage_button = [
             QuickReplyButton(
+                image_url='https://cdn-icons-png.flaticon.com/128/4495/4495685.png',
                 action=PostbackAction(
                     label=f"上一頁",
                     data=f'page&up,{postback_pagechange_data_slice[1]}'
@@ -251,16 +266,18 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
         ]
         downpage_button = [
             QuickReplyButton(
+                image_url='https://cdn-icons-png.flaticon.com/128/4495/4495689.png',
+                
                 action=PostbackAction(
                     label=f"下一頁",
-                    data=f'page&down,{postback_pagechange_data_slice[1]}'
-
+                    data=f'page&down,{postback_city}'
                 )
             )
         ]
         quick_item_pagelist = [
             [
                 QuickReplyButton(
+                    image_url='https://cdn-icons-png.flaticon.com/128/4619/4619069.png',
                     action=PostbackAction(
                         label=f"{lc_scan_answer[i]}",
                         data=f"local&{lc_scan_answer[i]}",
@@ -271,6 +288,7 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
             ],
             [
                 QuickReplyButton(
+                    image_url='https://cdn-icons-png.flaticon.com/128/4619/4619069.png',
                     action=PostbackAction(
                         label=f"{lc_scan_answer[i+9]}",
                         data=f"local&{lc_scan_answer[i+9]}",
