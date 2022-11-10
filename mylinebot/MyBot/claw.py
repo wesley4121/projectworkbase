@@ -26,12 +26,10 @@ def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=N
     if not userinput_city == None and not userinput_local == None and not userinput_type == None:
 
         url = f"https://ifoodie.tw/explore/{userinput_city}/{userinput_local}/list/{userinput_type}"
-        print(url)
 
     elif not userinput_city == None and not userinput_local == None:
 
         url = f"https://ifoodie.tw/explore/{userinput_city}/{userinput_local}/list"
-        print(url)
 
     elif not location == None:
 
@@ -40,7 +38,6 @@ def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=N
     else:
 
         url = f"https://ifoodie.tw/explore/{userinput_city}/list"
-        print(url)
 
     ua = UserAgent()
     headers = {'user-agent': ua.random}
@@ -65,61 +62,43 @@ def returnClawAnswer(userinput_city=None, userinput_local=None, userinput_type=N
             title = row.find("div", class_="jsx-3292609844 title").a.text
             title = title.replace(' ', '-')  # 取代空白
         except:
-            print('title:except')
             if title == None:
-                title = 'wwwwww'
-        #===
+                title = '無資料'
         try:
             score = row.find("div", class_="jsx-1207467136 text").text
         except:
-            print('score:except')
             if score == None:
-                score = 'wwwwww'
-        #===
+                score = '無資料'
         try:
             opentime = row.find("div", class_="jsx-3292609844 info").text
-            print(row.find("div", class_="jsx-3292609844 info").text)
         except:
-            print('opentime:except')
             if opentime == None:
-                opentime = 'wwwwww'
-        #===
+                opentime = '無資料'
         try:
             address = row.find("div", class_="jsx-3292609844 address-row").text
         except:
-            print('address:except')
             if address == None:
-                address = 'wwwwww'
-        #===
+                address = '無資料'
         try:
             id = row['data-id']
         except:
-            print('id:except')
             if id == None:
-                id = 'wwwwww'
-        #===
+                id = '無資料'
         try:
             titleURI = urllib.parse.quote(title)  # 轉URI
         except:
-            print('titleURI:except')
             if titleURI == None:
-                titleURI = 'wwwwww'
-        #===
+                titleURI = '無資料'
         try:
             uri = f'https://ifoodie.tw/restaurant/{id}-{titleURI}'  # 詳細資料
         except:
-            print('url:except')
             if uri == None:
-                uri = 'wwwwww'
-        #===
+                uri = '無資料'
         try:
             location = returnLocation(uri)
         except:
-            print('location:except')
             if location == None:
-                location = 'wwwwww'
-
-        # 避開第三筆之後會出現的lazyloaded
+                location = '無資料'
         if num >= 3:
             imgsrc = row.find(
                 'div', attrs={'class': 'jsx-3292609844 restaurant-info'}).a.img['data-src']
