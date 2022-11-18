@@ -297,6 +297,10 @@ def getQuickReply(userinput_city=None, postback_city=None, postback_pagechange=N
 def getCarouselTemplate(dump=None):
     if dump == None:
         return TextSendMessage(text='沒有資料')
+    for i,d in enumerate(len(dump)):
+        if d[i].length >=10:
+            d[i] = '無法顯示'
+        
     columnlist = [
         CarouselColumn(
             thumbnail_image_url=f'{dump[i][1]}',
